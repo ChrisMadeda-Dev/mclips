@@ -1,0 +1,133 @@
+<script>
+	import Textarea from '../../components/Textarea.svelte';
+	import { textStore } from '../../stores/store';
+
+	let text;
+
+	function handleInput() {
+		if (text && text.trim().length >= 2) {
+			textStore.update((val) => {
+				return [...val, { text: text }];
+			});
+			text = '';
+		}
+	}
+</script>
+
+<div class="home-page">
+	<header>
+		<h3>M CLips</h3>
+	</header>
+	<main class="home-cont">
+		<div class="top">
+			<textarea bind:value={text} />
+			<button on:click={handleInput}> CLIP</button>
+		</div>
+		<div class="center">
+			<Textarea />
+		</div>
+	</main>
+</div>
+
+<style>
+	header {
+		width: 100%;
+		height: 7vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: fixed;
+		top: 0px;
+		display: none;
+	}
+
+	.home-page {
+		width: 100%;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background-color: black;
+		color: white;
+		font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial,
+			sans-serif;
+	}
+
+	.home-cont {
+		width: 65%;
+		height: 95vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-evenly;
+		border-radius: 10px;
+		background-color: '';
+	}
+
+	.home-cont > .top {
+		flex: 0 0 30%;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+		align-items: center;
+		background-color: #1b1b1b;
+		border-radius: 20px;
+	}
+
+	.top > textarea {
+		height: 60%;
+		width: 75%;
+		padding: 20px;
+		border: none;
+		outline: none;
+		border-radius: 10px;
+		overflow-y: auto;
+		overflow-x: hidden;
+		background-color: #333333;
+		color: whitesmoke;
+		resize: none;
+	}
+
+	.top > button {
+		width: 40%;
+		height: 50px;
+		border-radius: 5px;
+		margin-top: 10px;
+		background-color: orange;
+	}
+
+	.home-cont > .center {
+		flex: 0 0 65%;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: '';
+		overflow-y: auto;
+		overflow-x: hidden;
+		border: 1px solid #353839;
+		border-radius: 20px;
+	}
+	::-webkit-scrollbar {
+		background-color: transparent;
+		width: 10px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #353839;
+		width: 60%;
+		border-radius: 60px;
+	}
+	::-webkit-scrollbar-button {
+		background-color: transparent;
+	}
+
+	@media (max-width: 600px) {
+		.home-cont {
+			width: 95%;
+			height: 98vh;
+		}
+	}
+</style>
