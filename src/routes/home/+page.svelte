@@ -7,7 +7,7 @@
 	function handleInput() {
 		if (text && text.trim().length >= 2) {
 			textStore.update((val) => {
-				return [...val, { text: text }];
+				return [{ text: text }, ...val];
 			});
 			text = '';
 		}
@@ -24,7 +24,11 @@
 			<button on:click={handleInput}> CLIP</button>
 		</div>
 		<div class="center">
-			<Textarea />
+			{#if textStore.length != 0}
+				<Textarea />
+			{:else}
+				<p>No content Clipped</p>
+			{/if}
 		</div>
 	</main>
 </div>
@@ -78,7 +82,8 @@
 
 	.top > textarea {
 		height: 60%;
-		width: 75%;
+		flex: 0 0 65%;
+		width: 95%;
 		padding: 20px;
 		border: none;
 		outline: none;
@@ -92,9 +97,8 @@
 
 	.top > button {
 		width: 40%;
-		height: 50px;
+		height: 45px;
 		border-radius: 5px;
-		margin-top: 10px;
 		background-color: orange;
 	}
 
@@ -128,6 +132,18 @@
 		.home-cont {
 			width: 95%;
 			height: 98vh;
+		}
+		.top {
+			justify-content: center;
+			gap: 7px;
+		}
+		.top > textarea {
+			width: 95%;
+			padding: 15px 0px;
+			flex: 0 0 70%;
+		}
+		.top > button {
+			height: 35px;
 		}
 	}
 </style>
