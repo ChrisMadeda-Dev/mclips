@@ -4,11 +4,12 @@
 	function checkUser() {
 		window.location.href = '/home';
 	}
-	if (window) {
-		checkUser();
-	}
+
+	//https://github.com/ChrisMadeda-Dev/mclips.git
 </script>
 
 <main>
 	<Authenticate />
 </main>
+
+

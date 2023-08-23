@@ -3,8 +3,8 @@
 </script>
 
 <div class="text-area">
-	{#each $textStore as text}
-		<div class="text-cont"><p>{text.text}</p></div>
+	{#each $textStore as text, index}
+		<div class="text-cont"><p>{index + 1}: {text.text}</p></div>
 	{/each}
 </div>
 

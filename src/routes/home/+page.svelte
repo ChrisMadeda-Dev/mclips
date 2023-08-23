@@ -1,14 +1,70 @@
 <script>
 	import Textarea from '../../components/Textarea.svelte';
 	import { textStore } from '../../stores/store';
+	import { auth, db } from '../../lib/firebase/firebase';
+	import {
+		collection,
+		addDoc,
+		serverTimestamp,
+		getDocs,
+		setDoc,
+		doc,
+		query,
+		orderBy
+	} from 'firebase/firestore';
+	import { onMount } from 'svelte';
 
 	let text;
+	let user;
 
-	function handleInput() {
-		if (text && text.trim().length >= 2) {
+	onMount(() => {
+		auth.onAuthStateChanged((a) => {
+			if (a) {
+				user = a;
+				getMyDocs();
+			} else {
+				return;
+			}
+		});
+	});
+
+	async function getMyDocs() {
+		console.log('getting');
+		if (user) {
+			const docRef = collection(db, `users/${user.uid}/myclips`);
+			const q = query(docRef, orderBy('createdAt', 'asc'));
+			const docSnap = await getDocs(q);
+
+			docSnap.forEach((doc) => {
+				textStore.update((curr) => {
+					return [doc.data(), ...curr];
+				});
+			});
+		}
+	}
+
+	function addUser() {
+		console.log(user.uid);
+		const ref = doc(db, `users/${user.uid}`);
+		setDoc(ref, {
+			uid: user.uid
+		});
+	}
+
+	async function handleInput() {
+		addUser();
+		if (user && text && text.trim().length >= 2) {
+			const docRef = collection(db, `users/${user.uid}/myclips`);
+			await addDoc(docRef, {
+				text: text,
+				uid: user.uid,
+				createdAt: serverTimestamp()
+			});
+
 			textStore.update((val) => {
 				return [{ text: text }, ...val];
 			});
+
 			text = '';
 		}
 	}
